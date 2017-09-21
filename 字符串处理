@@ -91,19 +91,144 @@ eg:   str1 = "ANHDM"    str2 = "MNA"    返回 true
       
       
       
+给定一个字符串数组（每个字符串只包含小写字母），找出串数组中互为变位字符串的所有情况，并返回
+
+eg:   source = ["lint", "intl", "inlt", "code"]          返回 ["lint", "inlt", "intl"]
+      source = ["ab", "ba", "cd", "dc", "e"]             返回 ["ab", "ba", "cd", "dc"]
+      
+      
+      public static String[] fromArrayGetAnagrams(String[] source){ // 思路一
+            if(source ==null ||source.length <2) return source;
+            
+            boolean[] visited = new boolean[source.length];
+            for(int i=0;i < visited.length;i++){
+                  visited[i] = false;
+            }
+            StringBuilder result = new StringBuilder();
+            boolean hasAnagrams = false;
+            
+            for(int i=0;i < source.length;i++){ // 暴力解法，双重循环同一个字符数组
+                  hasAnagrams = false;
+                  for(int j = i+1;j <source.length;j++){
+                        if(!visited[j] && judgeAnagramsByHash(source[j],source[i])){
+                                 result.append(source[j]+" ");
+                                 visited[j] = true;
+                                 hasAnagrams = true;
+                        }
+                  }
+                  result.toString().trim();
+                  if(!visited[i] && hasAnagrams) result.append(source[i]+" ");
+            }
+            result.toString().trim();
+            
+            return result.toString().split(" ");
+            
+      }
+      
+      
+      
+      public static  String[] fromArrayGetAnagramsByHashMap(String[] source){  // 思路二
+            if(source == null || source.length <2)  return source;
+            
+            StringBuilder result = new StringBuilder();
+            Map<String,ArrayList<String>>  maps = new HashMap<String,ArrayList<String>>();
+            
+            for(int i=0;i<source.length;i++){    //  先用hash统计一遍字符串数组中，按键排序后，把互为变位字符串的装在一起  List 中
+                  char[]  charArray = source[i].toCharArray();
+                  Arrays.sort(charArray);
+                  String key = String.valueOf(charArray);
+                  if(maps.containsKey(key)){
+                        ArrayList<String> lists = maps.get(key);
+                        lists.add(source[i]);
+                        maps.put(key,lists);
+                  }else{
+                        ArrayList<String> list = new ArrayList<String>();
+                        list.add(source[i]);
+                        maps.put(key,list);
+                  }
+            }
+            
+           Set<String>  sets =  maps.keySet();
+           for(String key:sets){   // 遍历一遍 map  ，如果建对应的list的长度大于1 ，说明这个list中的值互为变位字符串，放到最终结果中
+                ArrayList<String> lists = maps.get(key);
+                if(lists.size() >1){
+                        for(String str:lists){
+                                result.append(str+" ");
+                        }
+                }
+           }
+           result.toString().trim();
+           return result.toString().split(" ");
+      }
       
       
       
       
+给定两个字符串str1和str2，求这两个字符串的最长公共字串的长度，注意：最长公共字串是连续的，与最长公共子序列不同
+
+eg:  str1 = "ABCDNJH"      str2 = "ACDNHJM"     返回：3
+     str1 = "CDBNHG"       str2 = "CDBNHGKL"    返回：6
+     
+     
+     
+     public static int getMaxLongCommonSubString(String str1, String str2){
+            if(str1 == null || str2 == null) return 0;
+            if(str1.length() ==0 || str2.length() ==0)  return 0;
+            
+            int result =0;
+            int tempMaxLong =0;
+            for(int i =0;i <str1.length();i++){
+                tempMaxLong = 0;
+                for(int j = 0;j <str2.length();j++){
+                        while(   i+tempMaxLong < str1.length()
+                              && j+tempMaxLong < str2.length()
+                              && str1.charAt(i+tempMaxLong) == str2.charAt(j+tempMaxLong)
+                             ){
+                                     tempMaxLong++;
+                              }
+                }
+                if(result <tempMaxLong){
+                     result = tempMaxLong;
+                }
+            }
+            return result;
+     }
+     
+ 
       
-      
-      
-      
-      
-      
-      
-      
-      
+ 给定一个字符串 source，和整数N  返回该字符串从N出反转后的结果
+ 
+ eg:  source = "abcdkmnd"   N = 2    返回：ndabcdkm
+                            N = 3    返回：mndabcdk
+                            N = 4    返回：kmndabcd
+                            
+                           
+     
+     public static String reverseStringByOffset(String source , int N){
+          if(source == null ||source.length() == 0)  return source;
+          
+          int len = source.length();
+          char[] tempCharArray = source.toCharArray();
+          int offset = N % len;
+          reverseString(tempCharArray , 0 , len - offset - 1 );
+          reverseString(tempCharArray , len - offset , len -1 );
+          reverseString(tempCharArray , 0 , len - 1);
+          return String.valueOf(tempCharArray);
+     }
+     
+     private static void reverseString(char[] charArray , int start , int end){   // 辅助函数，将一个字符数组翻转  "abcd" -->  "dcba"
+         if(charArray == null || charArray.length == 0) return;
+         
+         char temp;
+         while( start < end ){
+                temp = charArray[start];
+                charArray[start] = charArray[end];
+                charArray[end] = temp;
+                start++;
+                end--;
+         }
+     
+     }
       
       
       
