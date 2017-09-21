@@ -31,7 +31,102 @@ eg：  source =  "abhdgf"    target= "hdg"    返回  2
 eg:   str1 = "acdfcacd"    str2 = "fcdccdaa"    返回 true
       str1 = "acdfcacd"    str2 = "aadfdccd"    返回false
       
+      
+      public static boolean judgeAnagramsByHash(String str1 ,String str2){   // 思路一
+            if(str1 == null ||str2 ==null) return false;
+            if(str1.length() != str2.length()) return fasle;
+            
+            int[] indexArray = new int[256];
+            for(int i=0;i < str1.length();i++){   // 巧妙应用hashMap词频统计
+                  ++indexArray[str1.charAt(i)];
+                  --indexArray[str2.charAt(i)];
+            }
+            
+            for(int i=0;i < indexArray.length;i++){
+                  if(indexArray[i] !=0){
+                        return false;
+                  }
+            }
+            return true;
+      }
     
+    
+    public static boolean judgeAnagramsBySort(String str1 ,String str2){ // 思路二
+            if(str1 == null || str2 == null ) return false;
+            if(str1.length() != str2.length()) return fasle;
+            
+            char[] charArray1 = str1.toCharArray();      // 灵活运用将字符串先排序，再比较
+            char[] charArray2 = str2.toCharArray();
+            Arrays.sort(charArray1);
+            Arrays.sort(charArray2);
+            if(String.valueOf(charArray1).compareTo(String.valueOf(charArray2)) == 0){
+                  return true;
+            }else return false;
+            
+    }
+      
+    
+判断两个字符串str1是否包含str2中的所有字符，注：str1和str2这两个字符串中的字符都是大写的英文字符
+      
+eg:   str1 = "ANHDM"    str2 = "MNA"    返回 true
+      str1 = "ANHDM"    str2 = "DKM"    返回false
+      
+      
+      public static boolean judgeContainByHash(String str1 , String str2){
+            if(str1 ==null || str2 ==null) return false;
+            if(str1.length() <str2.length()) return false;
+            
+            int[] counter = new counter[26];
+            for(int i=0;i<str1.length();i++){
+                  ++counter[str1.charAt(i)-'A'];
+            }
+            for(int i=0;i<str2.length();i++){
+                  --counter[str2.charAt(i)-'A'];
+                  if(counter[str2.charAt(i)-'A'] <0){
+                        return false
+                  }
+            }
+            return true;
+      }
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       
       
       
