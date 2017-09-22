@@ -1,0 +1,75 @@
+给定一个字符串，每个单词由一个或多个空格分隔，字符串头部和尾部可能也有空格，返回该字符串按照单词翻转，单词间仅有一个空格分割，并去掉首尾空格
+
+eg: source = "   hello  wolrd   "     返回："wolrd hello"    
+    source = "   algorithm understand and achieve!  "     返回："achieve! and understand algorithm"
+    
+    
+    public static String reverseStringByWord(String source){
+        if(source == null || source.length() == 0) return source;
+        
+        StringBuffer result = new StringBuffer();
+        StringBuffer tempWord = new StringBuffer();
+        int len = source.length();  
+        
+        while(len != 0){
+             tempWord.delete(0,tempWord.length());
+             while(!Character.isSpaceChar(source.charAt(--len))){
+                  tempWord.append(source.charAt(len));
+                  if(len == 0){
+                      break;
+                  }
+             }
+             
+             if(!result.toString().isEmpty()){
+                  result.append(" "); 
+             }
+             char[] tempCharArray = tempWord.toString().toCharArray();
+             reverseString(tempCharArray , 0 , tempCharArray.length-1);
+             result.append(tempCharArray);
+        }
+        
+        return result.toString().trim();
+    }
+    
+    辅助函数：reverseString(char[] charArray ,int start ,int end)     翻转字符串
+    
+    
+    
+    public static void reverseString(char[] charArray, int start ,int end){
+        if(charArray ==null ||charArray.length ==0)  return;
+        
+        char temp;
+        while(start < end){
+             temp = charArray[end];
+             charArray[start] = charArray[end];
+             charArray[end] = temp;
+             start++;
+             end--;
+        }
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
