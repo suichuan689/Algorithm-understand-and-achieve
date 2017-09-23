@@ -86,6 +86,89 @@ eg:source = "A man, a plan, a canal: Panama"       返回：true
     
     
     
+ 求一个字符串的最长回文字串，并返回
+ 
+ 
+ eg:source = "abcdzdcab"    返回："cdzdc"
+    source = "abdccd"       返回："dccd"
+    
+    
+    
+    public static String getMaxLongRalindRomeSubStringByEum(String source){  // 思路一，暴力枚举所有字串，记下最长回文串的起止位置
+           if(source == null || source.length() == 0) return source;
+           
+           String result = new String();
+           int start = 0;
+           int end = 0;
+           int longest = 0;
+           
+           for(int i=0;i < source.length();i++){
+                 for(int j = i+1;j <= source.length();j++){
+                    String tempStr = source.substring(i,j);
+                    if(isPalindRome(tempStr) && tempStr.length() > longest){
+                         start = i;
+                         end = j;
+                         longest = tempStr.length();
+                    }
+                 }
+           }
+           result = source.substring(start,end);
+           return result;
+    }
+    
+    
+辅助函数：boolean isRalindRome(String source)   判断一字符串是不是回文串
+
+     private static boolean isPalindRome(String source){
+        if(source == null || source.length() ==0 ) return true;
+        
+        for(int i =0 ;i< source.length(); i++){
+            if(source.charAt(i) != source.charAt(source.length() -i -1)){
+                return false;
+            }
+        }
+        return true;
+     }
+    
+    
+    
+    
+    public static String getMaxLongPalindRomeSubString(String source){
+        if(source == null || source.length() == 0) return source;
+        
+        String result = new String();
+        String tempStr = null;
+        for(int i=0;i<source.length();i++){
+        
+            tempStr = getPalindRome(source,i,i);    // 字符串长度是奇数的情况
+            if(tempStr != null && tempStr.length() > result.length()){
+                result = tempStr;
+            }
+            
+            tempStr = getPalindRome(source,i,i+1);  // 字符串长度是偶数的情况
+            if(tempStr != null && tempStr.length() > result.length()){
+                result = tempStr;
+            }
+        }
+        
+        return result;
+    }
+    
+    
+辅助函数  String getPalindRome(String source, int left , int right)
+
+     
+     public static String getPalindRome(String source, int left , int right){
+         if(source == null || source.length() == 0)  return source;
+        
+         while(left >= 0 && right < source.length() && source.charAt(left) == source.charAt(right)){
+                left--;
+                right++;
+         }
+         return source.substring(left+1,right);
+     }
+    
+    
     
     
     
