@@ -31,7 +31,8 @@ eg: source = "   hello  wolrd   "     返回："wolrd hello"
         return result.toString().trim();
     }
     
-    辅助函数：reverseString(char[] charArray ,int start ,int end)     翻转字符串
+    
+辅助函数：reverseString(char[] charArray ,int start ,int end)     翻转字符串
     
     
     
@@ -51,6 +52,37 @@ eg: source = "   hello  wolrd   "     返回："wolrd hello"
     
     
     
+判断一个字符串是否是非严格意义上的回文串，即在只考虑字母和数字，字母不区分大小写的情况下，是否构成回文串，返回布尔结果
+
+
+eg:source = "A man, a plan, a canal: Panama"       返回：true
+   source = "race a car"                           返回：false
+   
+   
+   public static boolean judgeIsPalindRome(String source){
+        if(source == null || source.length() ==0)  return true;
+        
+        int left = 0;
+        int right = source.length() -1;
+        while(left < right){
+        
+            if(!Character.isLetterOrDigit(source.charAt(left))){
+                left++;
+                continue;
+            }
+            if(!Character.isLetterOrDigit(source.charAt(right))){
+                right--;
+                continue;
+            }
+            if(Character.toLowerCase(source.charAt(left)) == Character.toLowerCase(source.charAt(right))){
+                left++;
+                right--;
+            }else{
+                return false;
+            }
+        }
+        return true;
+   }
     
     
     
