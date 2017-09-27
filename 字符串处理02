@@ -200,12 +200,99 @@ eg: source = "Mr John Smith"   返回：Mr%20John%20Smith
     
     
     
+    给定一个字符串，单词之间以空格分割，字符串首尾可能也存在空格，返回最后一个单词的字符个数
+    
+    eg: source = " Hello World   "      返回：5
+        source = "kill join pl "        返回：2
+        
+        
+        public static int getLastWordLengthByForward(String source){   // 思路一：从字符串结尾向前开始遍历
+             if(source == null || source.length() == 0) return 0;
+             
+             int count = 0;
+             for(int i=source.length() - 1;i>=0 ;i-- ){
+                 if(Character.isSpaceChar(source.charAt(i))){
+                     if(count !=0 ) break;
+                 }else{
+                     count++;
+                 }
+             }
+             return count;
+        }
+    
+    
+    public static int getLastWordLengthByBehind(String source){   // 思路二：从字符串开头向后遍历
+         if(source == null || source.length() == 0) return 0;
+         
+         int start = 0;
+         int end = source.length() - 1;
+         while(end >0 && Character.isSpaceChar(source.charAt(end)))  end--;
+         
+         for(int i=0 ; i< end ;i++){
+             if(Character.isSpaceChar(source.charAt(i))){
+                 start = i+1;
+             }
+         }
+         return end - start +1;
+    }
     
     
     
+   输入一个正整数 N ，返回一个字符串，该字符串的规则如下所述：
+   
+   eg: N =1       返回  "1" 
+       N =2       返回  "11"    ----- 相对与N=1 的结果，应读成 1个1
+       N =3       返回  "21"    ----- 相对与N=2 的结果，应读成 2个1
+       N =4       返回  "1211"  ----- 相对于N=3 的结果，应读成 1个1，1个2
+       N =5       返回  "111221"----- 相对与N=4 的结果，应读成 1个1，1个2，2个1
     
     
     
+    public static String getCountAndSayByNumber(int n){   // 一般思路，统计前一个字符串某一个字符连续重复的次数+该字符，拼接成串
+        if(n <= 0) return null;
+        
+        String result = "1";
+        for(int i=1;i<n;i++){
+            int count = 1;
+            StringBuilder current = new StringBuilder();
+            for(int j=0;j<result.length();j++){
+                if(j<result.length() -1 && result.charAt(j) == result.charAt(j+1)){
+                    count++;
+                }else{
+                    current.append(String.valueOf(count)+result.charAt(j));
+                }
+            }
+            result  = current.toString();
+        }
+        return result;
+    }
+    
+    
+    
+    public static String getCountAndSayByRecursion(int n){   // 思路二  递归的思想求解
+        if( n <= 0) return null;
+        if( n == 1) return "1";
+        
+        StringBuilder result = new StringBuilder();
+        String temp = getCountAndSayByRecursion(n-1);
+        
+        char tempChar = temp.charAt(0);
+        int count = 1;
+        for(int i=1;i<temp.length();i++){
+            if(tempChar == temp.charAt(i)){
+                count++;
+            }else{
+                result.append(String.valueOf(count));
+                result.append(tempChar);
+                tempChar = temp.charAt(i);
+                count = 1;
+            }
+        }
+        
+        result.append(String.valueOf(count));
+        result.append(tempChar);
+        return result.toString();
+    }
     
     
     
